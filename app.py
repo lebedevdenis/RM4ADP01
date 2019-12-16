@@ -12,18 +12,20 @@ from dash.dependencies import Input, Output
 import dash_daq as daq
 
 #computation
-import h5py
+#import h5py
 import numpy as np
 import scipy.special.lambertw as lambertw
 import math
 
 #plotting
-import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
+#import matplotlib.pyplot as plt
+#from mpl_toolkits import mplot3d
 
 #app setup
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)#,assets_folder="/assets")
+
+server=app.server
 
 #load data
 #T=6991
