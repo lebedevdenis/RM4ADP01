@@ -25,8 +25,6 @@ import math
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)#,assets_folder="/assets")
 
-server=app.server
-
 #load data
 #T=6991
 xbar=10
@@ -46,10 +44,10 @@ S=17
 delta1=np.load('assets/WebDelta.npy')
 gamma1=np.load('assets/WebGamma.npy')
 
-
-gamma=gamma1[:,0::10,:]
-delta=delta1[0::10,:]
-T=len(range(0,6990,10))
+n=100
+gamma=gamma1[:,0::n,:]
+delta=delta1[0::n,:]
+T=len(range(0,6990,n))
 
 #delta=delta1
 #gamma=gamma1
@@ -64,6 +62,7 @@ initG=[4,8,13,15] #slots prices initially displayed (switches on)
 sizeToggle=30
 heightRow=35
 
+oxblue='#002147'
 
 #auxialiary functions for app layout
 def myHeader():
@@ -74,10 +73,10 @@ def myHeader():
             ),
         html.H5(
             children=["Number of orders"],
-            style={'display': 'inline-block','width':'45%','text-align':'center'}
+            style={'display': 'inline-block','width':'45%'}
             ),
         html.H5(
-            children=["Plot ?"],
+            children=["Plot?"],
             style={'display': 'inline-block','width':'20%','text-align':'right'}
             ),
         ], style={'width': '100%'})]
@@ -93,12 +92,14 @@ def mySlot(I,S):
             style={'display': 'inline-block','width':'35%'}
             ),
         html.Div(
-            dcc.Slider(
+            daq.Slider(
                 id='slot{}-slider'.format(strSlot),
                 min=0,
                 max=xbar,
                 marks={xx: '{}'.format('' if I<(S-1) else xx) for xx in range(xbar+1)},
-                value=int(initX[I])
+                value=int(initX[I]),
+                size='100%',
+                color=oxblue
                 ),
             style={'display': 'inline-block','width':'45%'}
         ),
@@ -107,7 +108,7 @@ def mySlot(I,S):
                 id='slot{}-switch'.format(strSlot),
                 value = True if I in initG else False,
                 size=sizeToggle,
-                color='lightblue',
+                color=oxblue,
                 style={'float':'right'}
                 ),
             style={'display': 'inline-block', 'width':'20%','vertical-align':'top',
@@ -130,7 +131,7 @@ app.layout=html.Div([
     #DATA COLUMN
     html.Div(
         listSlot(S),
-        style={'width': '39%', 'display': 'inline-block'}
+        style={'width': '40%', 'display': 'inline-block'}
         ),
         
     #SEPARATOR COLUMN
@@ -149,14 +150,16 @@ app.layout=html.Div([
         html.H5(
             children=["Algorithm iterations"],
             style={'width':'100%'}),
-        dcc.Slider(
+        daq.Slider(
               min=0,
               max=100,
               marks={i: '{}'.format(i) for i in range(0,101,10)},
               value=100,
+              size='100%',
+              color=oxblue,
               id='iter'
               )
-     ], style={'width': '54%','display':'inline-block','vertical-align':'top'})
+     ], style={'width': '40%','display':'inline-block','vertical-align':'top'})
      ])
 
 #auxiliary callback functions
@@ -173,7 +176,7 @@ def myCallbackInput():
     Output('price-fig','figure'),
     myCallbackInput())
 def updateFig(*args):
-    it=args[0]
+    it=args[0]+1
     xx=[] #slider, orders x
     g=[] #switch, graphing boolean (plot true/false)
     for i in range(1,2*S,2):
@@ -228,7 +231,7 @@ def updateFig(*args):
     traces=[]
     for ss in plotSlots:
         traces.append(dict(
-            x=1+np.array(range(T)),
+            x=22-22*(1+np.array(range(0,6990,n)))/range(0,6990,n)[-1],
             y=dPlot[:,ss],
             text="Slot {}".format(str(ss+1).zfill(2)),
             name="Slot {}".format(str(ss+1).zfill(2))
@@ -237,10 +240,13 @@ def updateFig(*args):
     figure=dict(
         data= traces,
         layout= dict(
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 0},
+            margin={'l': 30, 'b': 30, 't': 30, 'r': 30},
             hovermode='closest',
-            #transition = {'duration': 500},
-            yaxis={'range':[0,10]}
+            height=520,
+            transition = {'duration': 500},
+            xaxis={'title':'Days before delivery day',
+                   'range':[22,0]},
+            yaxis={'range':[0,10],'title':'Delivery price in £'}
             )
         )
     return figure
