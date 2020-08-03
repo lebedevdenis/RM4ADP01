@@ -136,11 +136,11 @@ app.layout=html.Div([
     #DATA COLUMN
     html.Div(
         listSlot(S),
-        style={'width': '50%', 'display': 'inline-block'}
+        style={'width': '47%', 'display': 'inline-block'}
         ),
         
     #SEPARATOR COLUMN
-    html.Div(style={'width': '5%','display': 'inline-block'}),
+    html.Div(style={'width': '4%','display': 'inline-block'}),
     
     #PLOT COLUMN
     html.Div([#59% wide column
@@ -164,7 +164,7 @@ app.layout=html.Div([
               color=oxblue,
               id='iter'
               )
-     ], style={'width': '44%','display':'inline-block','vertical-align':'top'})
+     ], style={'width': '47%','display':'inline-block','vertical-align':'top'})
      ])
 
 #auxiliary callback functions
