@@ -164,7 +164,7 @@ app.layout=html.Div([
               color=oxblue,
               id='iter'
               )
-     ], style={'width': '36%','display':'inline-block','vertical-align':'top'})
+     ], style={'width': '45%','display':'inline-block','vertical-align':'top'})
      ])
 
 #auxiliary callback functions
