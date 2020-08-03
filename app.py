@@ -26,6 +26,10 @@ import math
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)#,assets_folder="/assets")
 
+
+server=app.server
+
+
 #load data
 #T=6991
 xbar=10
