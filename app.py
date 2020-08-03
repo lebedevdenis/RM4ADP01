@@ -49,7 +49,7 @@ S=17
 delta1=np.load('assets/WebDelta.npy')
 gamma1=np.load('assets/WebGamma.npy')
 
-n=100
+n=690
 gamma=gamma1[:,0::n,:]
 delta=delta1[0::n,:]
 T=len(range(0,6990,n))
